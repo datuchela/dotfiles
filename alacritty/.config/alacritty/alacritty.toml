@@ -1,0 +1,12 @@
+live_config_reload = false
+
+[window]
+padding = { x = 8, y = 8 }
+opacity = 0.85
+
+[scrolling]
+history = 20000
+
+[colors]
+[colors.primary]
+background = "#000000"
