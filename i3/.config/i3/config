@@ -66,10 +66,11 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+Return exec alacritty
-#bindsym $mod+Return exec xfce4-terminal
-#bindsym $mod+Return exec contour
-#bindsym $mod+Return exec kitty
+set $terminal alacritty
+#set $terminal xfce4-terminal
+#set $terminal contour
+#set $terminal kitty
+bindsym $mod+Return exec $terminal
 
 # kill focused window
 bindsym $mod+q kill
@@ -256,11 +257,7 @@ exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 #}
 
 # Custom application startups
-exec --no-startup-id sleep 5 && xfce4-terminal -e '/usr/bin/btop' -T btop
-#exec --no-startup-id sleep 7 && /usr/bin/vesktop
-#exec --no-startup-id sleep 8 && /usr/bin/slack
-#exec --no-startup-id sleep 7 && i3-msg 'workspace $ws10; exec /usr/bin/brave https://discord.com/app https://multi-task.slack.com'
-
+exec --no-startup-id sleep 5 && $terminal -T btop -e '/usr/bin/btop'
 exec --no-startup-id sleep 8 && /usr/bin/signal-desktop --use-tray-icon
 exec --no-startup-id /usr/lib/xfce-polkit/xfce-polkit
 
