@@ -1,7 +1,7 @@
 live_config_reload = false
 
 [window]
-padding = { x = 24, y = 24 }
+padding = { x = 8, y = 8 }
 opacity = 0.85
 
 [scrolling]
