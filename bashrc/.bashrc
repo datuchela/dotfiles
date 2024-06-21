@@ -65,7 +65,7 @@ export VISUAL=nvim
 alias cp='cp -i'
 alias mv='mv -i'
 alias trash='trash -v'
-alias rm='rm -iv'
+alias rm='rm -i'
 
 # Alias's for multiple directory listing commands
 alias la='ls -Alh'                # show hidden files
