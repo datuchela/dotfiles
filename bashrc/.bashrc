@@ -9,6 +9,5 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
-source ~/.bash_user/christitus.sh
-source ~/.bash_user/bashucha.sh
+source ~/bashucha.sh
 source /usr/share/nvm/init-nvm.sh
