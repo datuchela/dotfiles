@@ -9,6 +9,7 @@ polybar-msg cmd quit
 # Launch bar1 and bar2
 echo "---" | tee -a /tmp/polybar1.log /tmp/polybar2.log
 MONITOR=HDMI-A-2 polybar baruchela 2>&1 | tee -a /tmp/polybar1.log & disown
+sleep 0.0125
 MONITOR=HDMI-1-2 polybar baruchela 2>&1 | tee -a /tmp/polybar2.log & disown
 
 echo "Bars launched..."
