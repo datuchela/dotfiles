@@ -13,7 +13,9 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+font pango:JetBrainsMonoNerdFont-Regular 8
+font pango:NotoColorEmoji 8
+font pango:NotoSansGeorgian-Regular 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -211,13 +213,12 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
-bindsym $mod+r mode "resize"
+# bindsym $mod+r mode "resize"
 
 # border
 
 # use neither window title nor border
-bindsym $mod+u border pixel 0
-for_window [class=".*"] border pixel 2
+for_window [class=".*"] border pixel 1
 
 # gaps
 gaps outer 0
@@ -241,58 +242,70 @@ bindsym $mod+minus resize shrink width 10
 bindsym $mod+Shift+plus resize grow height 10
 bindsym $mod+Shift+minus resize shrink height 10
 
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-
 ## Start i3bar to display a workspace bar (plus the system information i3status
 ## finds out, if available)
 #bar {
+#        colors {
+#                background #121214
+#        }
 #	# transparency
 #	#i3bar_command i3bar --transparency
-
+#
 #	status_command i3status
+#        #status_command i3blocks
 #	tray_output primary
-
+#
 #	padding 0 4px
 #}
 
-# Custom application startups
-exec --no-startup-id sleep 5 && $terminal -T btop -e '/usr/bin/btop'
-exec --no-startup-id sleep 8 && /usr/bin/signal-desktop --use-tray-icon
-exec --no-startup-id /usr/lib/xfce-polkit/xfce-polkit
-
-set $ws_msg 10
-set $second_monitor HDMI-1-2
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Wacom setup
-exec --no-startup-id xsetwacom set "Wacom Cintiq 16 Pen stylus" MapToOutput $second_monitor
-exec --no-startup-id xsetwacom set "Wacom Cintiq 16 Pen stylus" PressureCurve 0 0 100 100
+#exec --no-startup-id xsetwacom set "Wacom Cintiq 16 Pen stylus" MapToOutput $second_monitor
+#exec --no-startup-id xsetwacom set "Wacom Cintiq 16 Pen stylus" PressureCurve 0 0 100 100
 
-# Place windows in specific workspaces
+# Place workspaces in specific monitors
+set $second_monitor HDMI-1-2
+
 workspace $ws1 output primary
 workspace $ws2 output primary
 workspace $ws3 output primary
 workspace $ws4 output primary
 workspace $ws5 output primary
-workspace $ws6 output primary
+workspace $ws6 output $second_monitor
 workspace $ws7 output $second_monitor
 workspace $ws8 output $second_monitor
 workspace $ws9 output $second_monitor
 workspace $ws10 output $second_monitor
 
-#for_window [class="discord"] set workspace $ws_msg
-#for_window [class="Slack"] set workspace $ws_msg
-#for_window [class="Signal"] set workspace $ws_msg
-
-#for_window [workspace=$ws_msg] layout tabbed
-
+# Place windows in specific workspaces
 assign [title="btop"] $ws7
-assign [class="vesktop"] $ws_msg
-assign [class="Slack"] $ws_msg
+assign [class="vesktop"] $ws10
 assign [class="Signal"] $ws9
 
-# Custom application shortcuts
+
+# ########################### #
+# Custom application startups #
+
+# Authentication agent
+exec --no-startup-id /usr/lib/xfce-polkit/xfce-polkit
+
+exec --no-startup-id sleep 5 && $terminal -T btop -e '/usr/bin/btop'
+exec --no-startup-id sleep 8 && /usr/bin/signal-desktop --use-tray-icon
+
+
+# ############################ #
+# Custom application shortcuts #
+
 bindsym $mod+b exec --no-startup-id /usr/bin/brave
+
+# Screenshot
 bindsym $mod+Print exec --no-startup-id maim -s | xclip -selection clipboard -t image/png
+
+# Night light (redshift)
 bindsym $mod+t exec redshift -P -O 3500
 bindsym $mod+Shift+t exec redshift -x
+
+# Simple calendar
+bindsym $mod+c exec --no-startup-id /usr/bin/gsimplecal
 
