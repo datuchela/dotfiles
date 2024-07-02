@@ -284,8 +284,10 @@ workspace $ws10 output $second_monitor
 # Place windows in specific workspaces
 assign [title="btop"] $ws7
 assign [class="vesktop"] $ws10
-assign [class="Signal"] $ws9
+assign [class="Signal"] $ws6
 
+# Switch to a specific workspace on startup
+exec --no-startup-id i3-msg workspace $ws7
 
 # ########################### #
 # Custom application startups #
@@ -293,7 +295,7 @@ assign [class="Signal"] $ws9
 # Authentication agent
 exec --no-startup-id /usr/lib/xfce-polkit/xfce-polkit
 
-exec --no-startup-id sleep 5 && $terminal -T btop -e '/usr/bin/btop'
+exec --no-startup-id sleep 4 && $terminal -T btop -e '/usr/bin/btop'
 exec --no-startup-id sleep 8 && /usr/bin/signal-desktop --use-tray-icon
 
 
