@@ -1,5 +1,7 @@
 RANGER_LOAD_DEFAULT_RC=false
 eval "$(zoxide init bash)"
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)"
 
 # ############## #
 # Custom aliases #
@@ -8,9 +10,6 @@ eval "$(zoxide init bash)"
 alias neofetch='fastfetch'
 alias amogus='fastfetch'
 
-# ssh aliases
-alias acerbook='ssh -p 69 -i ~/.ssh/ssh-acerbook-id_ed25519 datucha@192.168.1.59'
-alias acerbook-wifi='ssh -p 69 -i ~/.ssh/ssh-acerbook-id_ed25519 datucha@192.168.1.13'
 ##############
 
 # Git branch name in shell prompt
