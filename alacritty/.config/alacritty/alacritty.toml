@@ -9,7 +9,7 @@ history = 20000
 
 [font]
 normal = { family = "JetBrainsMonoNerdFont", style = "Regular" }
-size = 12
+size = 13
 
 [colors]
 [colors.primary]
