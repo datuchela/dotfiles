@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
-# Terminate already running bar instances
-# If all your bars have ipc enabled, you can use 
-polybar-msg cmd quit
-# Otherwise you can use the nuclear option:
-# killall -q polybar
+if [ -z "$(pgrep -x polybar)" ]; then
+	BAR="baruchela"
+	for m in $(polybar --list-monitors | cut -d":" -f1 | tac); do
+		MONITOR=$m polybar --reload $BAR &
+		sleep 0.5 
+	done
+else
+	polybar-msg cmd restart
+fi
 
-# Launch bar1 and bar2
-echo "---" | tee -a /tmp/polybar1.log /tmp/polybar2.log
-MONITOR=HDMI-A-2 polybar baruchela 2>&1 | tee -a /tmp/polybar1.log & disown
-sleep 0.0125
-MONITOR=HDMI-1-2 polybar baruchela 2>&1 | tee -a /tmp/polybar2.log & disown
-
-echo "Bars launched..."
+echo "All Polybar instances launched..."
