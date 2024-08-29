@@ -451,6 +451,7 @@ require('lazy').setup({
       --    That is to say, every time a new file is opened that is associated with
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
       --    function will be executed to configure the current buffer
+
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
@@ -540,6 +541,8 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      --
+
       local servers = {
         -- clangd = {},
         -- gopls = {},
@@ -553,18 +556,52 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
         --
-
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
           -- capabilities = {},
           settings = {
             Lua = {
+              runtime = {
+                version = 'LuaJIT',
+              },
               completion = {
                 callSnippet = 'Replace',
               },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = {
+                -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+                -- disable = { 'missing-fields' },
+                globals = {
+                  'vim',
+                  'cc',
+                  'turtle',
+                  'peripheral',
+                  'redstone',
+                  'commands',
+                  'gps',
+                  'http',
+                  'keys',
+                  'multishell',
+                  'os',
+                  'paintutils',
+                  'parallel',
+                  'peripheral',
+                  'pocket',
+                  'rednet',
+                  'redstone',
+                  'shell',
+                  'term',
+                  'textutils',
+                  'vector',
+                  'window',
+                },
+              },
+              workspace = {
+                library = {
+                  -- vim.api.nvim_get_runtime_file('', true),
+                  [vim.fn.expand '/home/datucha/repos/lua-ls-cc-tweaked'] = true,
+                },
+              },
             },
           },
         },
@@ -633,6 +670,8 @@ require('lazy').setup({
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
+        -- python = { { 'autoflake', 'autopep8', 'ast_grep' } },
+        python = { 'isort', 'black' },
         javascript = { { 'prettierd', 'prettier' } },
       },
     },
@@ -748,13 +787,23 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    'catppuccin/nvim',
+    name = 'catppuccin',
     priority = 1000, -- Make sure to load this before all the other start plugins.
+    opts = {
+      -- color_overrides = {
+      --   mocha = {
+      --     base = '#000000',
+      --     mantle = '#000000',
+      --     crust = '#000000',
+      --   },
+      -- },
+    },
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'catppuccin-mocha'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
@@ -872,6 +921,21 @@ require('lazy').setup({
     },
   },
 })
+
+require('lspconfig')['gdscript'].setup {
+  name = 'godot',
+  cmd = vim.lsp.rpc.connect('127.0.0.1', 6005),
+  on_attach = function(client, bufnr)
+    -- Key mappings for LSP
+    local opts = { noremap = true, silent = true }
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  end,
+  --  flags = {
+  --    debounce_text_changes = 150,
+  --  },
+}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -1,11 +1,32 @@
 set $mod Mod4
+set $monitor_second HDMI-1-2
+set $monitor_primary HDMI-A-2
+set $terminal alacritty
+set $save_layout_key s
+set $restore_layout_key n
+set $font_size 8
+set $bar_font_size 9
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws0 "10"
+
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:JetBrainsMonoNerdFont-Regular 8
-font pango:monospace 8
-font pango:NotoColorEmoji 8
-font pango:NotoSansGeorgian-Regular 8
+font pango:JetBrainsMonoNerdFont-Regular $font_size
+font pango:monospace $font_size
+font pango:NotoColorEmoji $font_size
+font pango:NotoSansGeorgian-Regular $font_size
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -20,11 +41,11 @@ font pango:NotoSansGeorgian-Regular 8
 
 exec --no-startup-id xcompmgr -C -n &
 
-# Start a script to setup displays
-exec --no-startup-id $HOME/.screenlayout/monitors.sh
-
 # configure multiple keyboard layouts and hotkey to switch (Alt+Shift in this example)
 exec_always --no-startup-id setxkbmap -layout 'us,ge' -variant altgr-intl,qwerty -option 'grp:alt_shift_toggle'
+
+bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
+bindsym --release Num_Lock  exec pkill -SIGRTMIN+11 i3blocks
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -38,7 +59,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l --spa
 exec --no-startup-id nm-applet --sm-disable
 
 # Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
+set $refresh_i3status pkill -RTMIN+10 i3blocks
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
@@ -52,10 +73,6 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal
-set $terminal alacritty
-#set $terminal xfce4-terminal
-#set $terminal contour
-#set $terminal kitty
 bindsym $mod+Return exec $terminal
 
 # kill focused window
@@ -67,15 +84,11 @@ bindsym $mod+q kill
 # start dmenu (a program launcher)
 #bindsym $mod+d exec --no-startup-id dmenu_run
 
-# A more modern dmenu replacement is rofi:
-# bindcode $mod+40 exec "rofi -modi drun,run -show drun"
-# There also is i3-dmenu-desktop which only displays applications shipping a
-# .desktop file. It is a wrapper around dmenu, so you need that installed.
-# bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id ~/.config/rofi/launchers/type-6/launcher.sh
+bindsym $mod+End exec --no-startup-id ~/.config/rofi/applets/bin/powermenu.sh
 
-bindsym $mod+d exec --no-startup-id rofi -modi drun -show drun -config ~/.config/rofi/rofidmenu.rasi
 # rofi with root privileges (requires "lxqt-sudo")
-bindsym $mod+Shift+d exec --no-startup-id rofi -modi drun -show drun -run-command 'lxqt-sudo {cmd}' -config ~/.config/rofi/rofidmenu.rasi
+bindsym $mod+Shift+d exec --no-startup-id /home/datucha/rofi_launcher -modi drun -show drun -run-command 'lxqt-sudo {cmd}'
 
 # change focus
 bindsym $mod+h focus left
@@ -111,7 +124,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+#bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -125,20 +138,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
-
-# Define names for default workspaces for which we configure key bindings later on.
-# We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+#bindsym $mod+c focus child
 
 # switch/iterate between workspaces
 bindsym $mod+Tab workspace next
@@ -154,7 +154,7 @@ bindsym $mod+6 workspace number $ws6
 bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws10
+bindsym $mod+0 workspace number $ws0
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -166,7 +166,7 @@ bindsym $mod+Shift+6 move container to workspace number $ws6
 bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws10
+bindsym $mod+Shift+0 move container to workspace number $ws0
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -175,14 +175,60 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
+# ############ #
+# i3-resurrect #
+#
+# Save current workspace programs and layout
+bindsym $mod+$save_layout_key exec "i3_resurrect save --swallow=class\,instance\,title"
+# Restore current workspace programs and layout
+bindsym $mod+$restore_layout_key exec "i3_resurrect restore --programs-only && i3_resurrect restore --layout-only"
+
+# Save workspace mode.
+bindsym $mod+Shift+$save_key mode "save"
+
+mode "save" {
+  bindsym 1 exec i3_resurrect save -w $ws1
+  bindsym 2 exec i3_resurrect save -w $ws2
+  bindsym 3 exec i3_resurrect save -w $ws3
+  bindsym 4 exec i3_resurrect save -w $ws4
+  bindsym 5 exec i3_resurrect save -w $ws5
+  bindsym 6 exec i3_resurrect save -w $ws6
+  bindsym 7 exec i3_resurrect save -w $ws7
+  bindsym 8 exec i3_resurrect save -w $ws8
+  bindsym 9 exec i3_resurrect save -w $ws9
+  bindsym 0 exec i3_resurrect save -w $ws0
+
+  # Back to normal: Enter, Escape, or s
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym $save_key mode "default"
+  bindsym $mod+Shift+$save_key mode "default"
+}
+
+# Restore workspace mode.
+bindsym $mod+Shift+$restore_key mode "restore"
+
+mode "restore" {
+  bindsym 1 exec i3_resurrect restore -w $ws1
+  bindsym 2 exec i3_resurrect restore -w $ws2
+  bindsym 3 exec i3_resurrect restore -w $ws3
+  bindsym 4 exec i3_resurrect restore -w $ws4
+  bindsym 5 exec i3_resurrect restore -w $ws5
+  bindsym 6 exec i3_resurrect restore -w $ws6
+  bindsym 7 exec i3_resurrect restore -w $ws7
+  bindsym 8 exec i3_resurrect restore -w $ws8
+  bindsym 9 exec i3_resurrect restore -w $ws9
+  bindsym 0 exec i3_resurrect restore -w $ws0
+
+  # Back to normal: Enter, Escape, or n
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym $restore_key mode "default"
+  bindsym $mod+Shift+$restore_key mode "default"
+}
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         bindsym h resize shrink width 1 px or 1 ppt
         bindsym j resize grow height 1 px or 1 ppt
         bindsym k resize shrink height 1 px or 1 ppt
@@ -206,6 +252,11 @@ mode "resize" {
 
 # use neither window title nor border
 for_window [class=".*"] border pixel 1
+bindsym $mod+U "mark --add _; [con_mark=f] border pixel 1, mark --add --toggle _; [con_mark=_] border normal; mark --add --toggle f;"
+
+# enable floating for specific windows
+for_window [window_role="About"] floating enable
+for_window [instance="Godot_Engine"] floating enable, border normal
 
 # gaps
 gaps outer 0
@@ -229,60 +280,72 @@ bindsym $mod+minus resize shrink width 10
 bindsym $mod+Shift+plus resize grow height 10
 bindsym $mod+Shift+minus resize shrink height 10
 
-## Start i3bar to display a workspace bar (plus the system information i3status
-## finds out, if available)
-#       bar {
-#               colors {
-#                       background #121214
-#               }
-#               # transparency
-#               #i3bar_command i3bar --transparency
 
-#               #status_command i3status
-#                       status_command i3blocks
-#                       tray_output primary
+##i3bar
+bar {
+  colors {
+    background #191919
+      statusline #d8dee9
+      separator  #4c566a
+      focused_workspace  #81a1c1 #5e81ac #d8dee9
+      active_workspace   #4c566a #434c5e #d8dee9
+      inactive_workspace #3b4252 #2e3440 #7a869f
+      urgent_workspace   #d24b59 #bf616a #2e3440
+      binding_mode       #c67bb9 #b48ead #2e3440
+  }
+  font pango:JetBrainsMonoNerdFont-Regular $bar_font_size
+  font pango:monospace $bar_font_size
+  font pango:NotoColorEmoji $bar_font_size
+  font pango:NotoSansGeorgian-Regular $bar_font_size
 
-#                       padding 0 4px
-#       }
+  status_command i3blocks
+    padding 0 10px 0 0
+    tray_output primary
+    #tray_output $monitor_second
+    tray_padding 4
+
+}
 
 # Wacom setup
-#exec --no-startup-id xsetwacom set "Wacom Cintiq 16 Pen stylus" MapToOutput $second_monitor
+#exec --no-startup-id xsetwacom set "Wacom Cintiq 16 Pen stylus" MapToOutput $monitor_second
 #exec --no-startup-id xsetwacom set "Wacom Cintiq 16 Pen stylus" PressureCurve 0 0 100 100
 
 # Place workspaces in specific monitors
-set $second_monitor HDMI-1-2
 
 workspace $ws1 output primary
 workspace $ws2 output primary
 workspace $ws3 output primary
 workspace $ws4 output primary
 workspace $ws5 output primary
-workspace $ws6 output $second_monitor
-workspace $ws7 output $second_monitor
-workspace $ws8 output $second_monitor
-workspace $ws9 output $second_monitor
-workspace $ws10 output $second_monitor
+workspace $ws6 output $monitor_second
+workspace $ws7 output $monitor_second
+workspace $ws8 output $monitor_second
+workspace $ws9 output $monitor_second
+workspace $ws0 output $monitor_second
 
 # Place windows in specific workspaces
-assign [title="btop"] $ws7
-assign [class="vesktop"] $ws10
-assign [class="Signal"] $ws6
+assign [title="btop"] $ws6
+assign [class="vesktop"] $ws0
+assign [class="Signal"] $ws9
 
 # Switch to a specific workspace on startup
-exec --no-startup-id i3-msg workspace $ws7
+#exec --no-startup-id i3-msg workspace $ws7
 
-bindsym $mod+Shift+m exec --no-startup-id ~/.screenlayout/monitors_144.sh
-bindsym $mod+m exec --no-startup-id ~/.screenlayout/monitors.sh
+bindsym $mod+Shift+m exec --no-startup-id REFRESH_RATE=165 ~/.screenlayout/monitors.sh
+bindsym $mod+m exec --no-startup-id REFRESH_RATE=144 ~/.screenlayout/monitors.sh
 #bindsym $mod+Shift+p exec --no-startup-id ~/.screenlayout/monitor.sh
 
 # ########################### #
 # Custom application startups #
 
+# Start a script to setup displays
+exec --no-startup-id sleep 0.5 && $HOME/.screenlayout/monitors.sh
+
 # Restore nitrogen background
-exec_always --no-startup-id && nitrogen --restore
+exec_always --no-startup-id sleep 1 && nitrogen --restore
 
 # Polybar
-exec_always --no-startup-id sleep 2 && $HOME/.config/polybar/launch.sh
+#exec_always --no-startup-id sleep 2 && $HOME/.config/polybar/launch.sh
 
 # Authentication agent
 exec --no-startup-id /usr/lib/xfce-polkit/xfce-polkit
@@ -292,18 +355,32 @@ exec --no-startup-id sleep 4 && /usr/bin/pasystray
 exec --no-startup-id sleep 4 && $terminal -T btop -e '/usr/bin/btop'
 exec --no-startup-id sleep 8 && /usr/bin/signal-desktop --use-tray-icon
 
+# inhibit sleep
+exec --no-startup-id sleep 10 && /usr/bin/caffeine
+
 
 # ############################ #
 # Custom application shortcuts #
+
+bindsym $mod+F4 exec --no-startup-id /home/datucha/enable_autotiling.sh
+bindsym $mod+Shift+F4 exec --no-startup-id killall -q autotiling
 
 bindsym $mod+b exec --no-startup-id /usr/bin/brave
 
 # Screenshot
 bindsym $mod+Print exec --no-startup-id maim -s | xclip -selection clipboard -t image/png
 
+# Extract text
+bindsym $mod+Insert exec --no-startup-id /home/datucha/text_extract.sh
+
+# Emoji picker
+bindsym $mod+period exec emote
+
 # Night light (redshift)
-bindsym $mod+t exec redshift -P -O 3500
+bindsym $mod+t exec redshift -P -O 3700
 bindsym $mod+Shift+t exec redshift -x
+
+bindsym $mod+p exec --no-startup-id "sleep 0.1 && xcolor --preview-size 155 --selection clipboard"
 
 # Simple calendar
 bindsym $mod+c exec --no-startup-id /usr/bin/gsimplecal

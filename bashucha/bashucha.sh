@@ -1,7 +1,20 @@
+# Add rofi scripts directory to the $PATH variable
+PATH=$PATH:~/.config/rofi/scripts
+
 RANGER_LOAD_DEFAULT_RC=false
 eval "$(zoxide init bash)"
 # Set up fzf key bindings and fuzzy completion
 eval "$(fzf --bash)"
+
+# Yazi as yy
+function yz() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
 
 # ############## #
 # Custom aliases #

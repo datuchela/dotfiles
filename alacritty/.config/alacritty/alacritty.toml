@@ -13,7 +13,9 @@ size = 13
 
 [colors]
 [colors.primary]
-background = "#000000"
+background = "#040405"
+
+
 
 [env]
 term = "xterm-256color"
