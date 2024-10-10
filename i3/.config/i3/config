@@ -369,7 +369,7 @@ exec --no-startup-id sleep 5 && /usr/bin/caffeine
 # ############################ #
 # Custom application shortcuts #
 
-bindsym $mod+F4 exec --no-startup-id /home/datucha/enable_autotiling.sh
+bindsym $mod+F4 exec --no-startup-id /home/datucha/scripts/enable_autotiling.sh
 bindsym $mod+Shift+F4 exec --no-startup-id killall -q autotiling
 
 bindsym $mod+b exec --no-startup-id /usr/bin/brave
@@ -378,7 +378,7 @@ bindsym $mod+b exec --no-startup-id /usr/bin/brave
 bindsym $mod+Print exec --no-startup-id maim -s | xclip -selection clipboard -t image/png
 
 # Extract text
-bindsym $mod+Insert exec --no-startup-id /home/datucha/text_extract.sh
+bindsym $mod+Insert exec --no-startup-id /home/datucha/scripts/text_extract.sh
 
 # Emoji picker
 bindsym $mod+period exec emote
