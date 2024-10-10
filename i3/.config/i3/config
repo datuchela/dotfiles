@@ -335,8 +335,8 @@ assign [class="Signal"] $ws9
 # Switch to a specific workspace on startup
 #exec --no-startup-id i3-msg workspace $ws7
 
-bindsym $mod+Shift+m exec --no-startup-id REFRESH_RATE=165 ~/.screenlayout/monitors.sh
-bindsym $mod+m exec --no-startup-id REFRESH_RATE=144 ~/.screenlayout/monitors.sh
+bindsym $mod+m exec --no-startup-id REFRESH_RATE=165 ~/.screenlayout/monitors.sh
+bindsym $mod+Shift+m exec --no-startup-id ~/.screenlayout/monitors_reversed.sh
 #bindsym $mod+Shift+p exec --no-startup-id ~/.screenlayout/monitor.sh
 
 # ########################### #
