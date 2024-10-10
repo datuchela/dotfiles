@@ -346,21 +346,24 @@ bindsym $mod+Shift+m exec --no-startup-id ~/.screenlayout/monitors_reversed.sh
 exec --no-startup-id sleep 0.5 && $HOME/.screenlayout/monitors.sh
 
 # Restore nitrogen background
-exec_always --no-startup-id sleep 1 && nitrogen --restore
+exec_always --no-startup-id sleep 0.8 && nitrogen --restore
 
 # Polybar
-#exec_always --no-startup-id sleep 2 && $HOME/.config/polybar/launch.sh
+#exec_always --no-startup-id sleep 1 && $HOME/.config/polybar/launch.sh
 
 # Authentication agent
 exec --no-startup-id /usr/lib/xfce-polkit/xfce-polkit
-# PulseAudio system tray
-exec --no-startup-id sleep 4 && /usr/bin/pasystray
 
-exec --no-startup-id sleep 4 && $terminal -T btop -e '/usr/bin/btop'
-exec --no-startup-id sleep 8 && /usr/bin/signal-desktop --use-tray-icon
+# PulseAudio system tray
+exec --no-startup-id sleep 2 && /usr/bin/pasystray
+exec --no-startup-id sleep 3 && $refresh_i3status
+
+exec --no-startup-id sleep 2 && $terminal -T btop -e '/usr/bin/btop'
+exec --no-startup-id sleep 2 && /usr/bin/signal-desktop --use-tray-icon
 
 # inhibit sleep
-exec --no-startup-id sleep 10 && /usr/bin/caffeine
+exec --no-startup-id sleep 5 && /usr/bin/caffeine
+
 
 
 # ############################ #
