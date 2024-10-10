@@ -256,7 +256,11 @@ bindsym $mod+U "mark --add _; [con_mark=f] border pixel 1, mark --add --toggle _
 
 # enable floating for specific windows
 for_window [window_role="About"] floating enable
+for_window [class="steam"] floating enable, border normal
+for_window [instance="virt-manager"] floating enable, border normal
+for_window [title="Virtual Machine Manager"] resize set 640 480
 for_window [instance="Godot_Engine"] floating enable, border normal
+for_window [instance="endzhin"] floating enable, border normal
 
 # gaps
 gaps outer 0
