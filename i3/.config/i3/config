@@ -381,7 +381,7 @@ bindsym $mod+Print exec --no-startup-id maim -s | xclip -selection clipboard -t 
 bindsym $mod+Insert exec --no-startup-id /home/datucha/scripts/text_extract.sh
 
 # Emoji picker
-bindsym $mod+period exec emote
+bindsym $mod+period exec /home/datucha/scripts/dmenu_emoji.sh
 
 # Night light (redshift)
 bindsym $mod+t exec redshift -P -O 3700
